@@ -8,6 +8,4 @@ public interface UserRepository {
     Optional<User> save(User user);
 
     Optional<User> getByEmail(String email);
-
-    Optional<User> getByUsername(String username);
 }

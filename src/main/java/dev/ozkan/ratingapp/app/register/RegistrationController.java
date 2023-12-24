@@ -1,8 +1,8 @@
 package dev.ozkan.ratingapp.app.register;
 
-import dev.ozkan.ratingapp.business.core.ResponseMessage;
 import dev.ozkan.ratingapp.business.core.resulthandler.BusinessResultHandler;
 import dev.ozkan.ratingapp.core.registration.RegistrationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,10 +16,14 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping("/register")
-    ResponseEntity<ResponseMessage> register(@RequestBody RegistrationRequest request){
+    @PostMapping("/auth/register")
+    ResponseEntity<?> register(@RequestBody RegistrationRequest request){
         var result = registrationService.register(request.toServiceRequest());
-        return BusinessResultHandler.handleResult(result);
+        if (!result.isSuccess()){
+            BusinessResultHandler.handleFailureReason(result.getReason(),result.getMessage());
+        }
+        RegistrationResponse response = new RegistrationResponse(result.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
 

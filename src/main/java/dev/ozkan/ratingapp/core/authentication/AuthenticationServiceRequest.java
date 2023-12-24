@@ -1,20 +1,21 @@
-package dev.ozkan.ratingapp.core.registration;
+package dev.ozkan.ratingapp.core.authentication;
 
 import jakarta.validation.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
-public class RegistrationServiceRequest {
+public class AuthenticationServiceRequest {
+
     @Email
     private String email;
+
     @Length(min = 8)
     private String password;
-    private String name;
 
     public String getEmail() {
         return email;
     }
 
-    public RegistrationServiceRequest setEmail(String email) {
+    public AuthenticationServiceRequest setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -23,17 +24,8 @@ public class RegistrationServiceRequest {
         return password;
     }
 
-    public RegistrationServiceRequest setPassword(String password) {
+    public AuthenticationServiceRequest setPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public RegistrationServiceRequest setName(String name) {
-        this.name = name;
         return this;
     }
 }

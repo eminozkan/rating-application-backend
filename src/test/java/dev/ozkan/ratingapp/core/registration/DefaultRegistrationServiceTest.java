@@ -39,7 +39,6 @@ class DefaultRegistrationServiceTest {
         registrationService = new DefaultRegistrationService(userRepository, userPasswordEncoder);
         request = new RegistrationServiceRequest()
                 .setEmail("unique-email@email.tld")
-                .setUsername("username")
                 .setPassword("password")
                 .setName("Name");
     }
@@ -61,35 +60,12 @@ class DefaultRegistrationServiceTest {
     }
 
 
-    @DisplayName("Try registration with non-unique username")
-    @Test
-    void usernameIsNotUnique() {
-        request.setUsername("non-unique-username");
-
-        Mockito.doReturn(Optional.empty())
-                .when(userRepository)
-                .getByEmail(request.getEmail());
-
-        Mockito.doReturn(Optional.of(new User()))
-                .when(userRepository)
-                .getByUsername(request.getUsername());
-
-        var result = registrationService.register(request);
-        assertFalse(result.isSuccess());
-        assertEquals(OperationFailureReason.CONFLICT, result.getReason());
-        Mockito.verifyNoMoreInteractions(userRepository);
-    }
-
     @DisplayName("Success")
     @Test
     void success(){
         Mockito.doReturn(Optional.empty())
                 .when(userRepository)
                 .getByEmail(request.getEmail());
-
-        Mockito.doReturn(Optional.empty())
-                .when(userRepository)
-                .getByUsername(request.getUsername());
 
         Mockito.doReturn("encodedPassword")
                 .when(userPasswordEncoder)
@@ -103,11 +79,9 @@ class DefaultRegistrationServiceTest {
 
         var capturedUser = userArgumentCaptor.getValue();
         assertThat(capturedUser.getUserId()).isNotNull().isNotEmpty().isNotBlank();
-        assertEquals(request.getUsername(),capturedUser.getUsername());
         assertEquals(request.getEmail(),capturedUser.getEmail());
         assertEquals("encodedPassword",capturedUser.getPasswordHash());
         assertEquals(request.getName(),capturedUser.getName());
-        assertThat(result.getEntity()).isNotNull();
     }
 
 
