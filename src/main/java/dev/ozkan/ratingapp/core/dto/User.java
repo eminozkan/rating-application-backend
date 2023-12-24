@@ -3,13 +3,16 @@ package dev.ozkan.ratingapp.core.dto;
 import jakarta.validation.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public class User{
+import java.util.Collection;
+import java.util.Collections;
+
+public class User implements UserDetails {
     @Id
     private String userId;
-
-    @Indexed
-    private String username;
 
     @Indexed
     @Email
@@ -19,21 +22,18 @@ public class User{
 
     private String name;
 
+    private boolean isLocked;
+
+    private boolean isEnabled;
+
+    private UserRole role;
+
     public String getUserId() {
         return userId;
     }
 
     public User setUserId(String userId) {
         this.userId = userId;
-        return this;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public User setUsername(String username) {
-        this.username = username;
         return this;
     }
 
@@ -62,5 +62,55 @@ public class User{
     public User setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public User setLocked(boolean locked) {
+        isLocked = locked;
+        return this;
+    }
+
+    public User setEnabled(boolean enabled) {
+        isEnabled = enabled;
+        return this;
+    }
+
+    public User setRole(UserRole role) {
+        this.role = role;
+        return this;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !isLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }
