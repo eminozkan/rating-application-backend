@@ -35,4 +35,4 @@ contributors are expected to adhere to the [code of conduct][coc].
 
   
 
-[coc]: https://github.com/eminozkan/rating-application/blob/main/CODE_OF_CONDUCT.md
+[coc]: https://github.com/eminozkan/rating-application-backend/blob/main/CODE_OF_CONDUCT.md
