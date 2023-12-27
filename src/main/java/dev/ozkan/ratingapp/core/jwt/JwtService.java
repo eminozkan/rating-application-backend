@@ -1,4 +1,4 @@
-package dev.ozkan.ratingapp.config.jwt;
+package dev.ozkan.ratingapp.core.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

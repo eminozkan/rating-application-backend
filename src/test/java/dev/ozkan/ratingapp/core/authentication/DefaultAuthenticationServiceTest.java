@@ -2,7 +2,7 @@ package dev.ozkan.ratingapp.core.authentication;
 
 import dev.ozkan.ratingapp.business.core.result.OperationFailureReason;
 import dev.ozkan.ratingapp.config.UserPasswordEncoderAdapter;
-import dev.ozkan.ratingapp.config.jwt.JwtService;
+import dev.ozkan.ratingapp.core.jwt.JwtService;
 import dev.ozkan.ratingapp.core.dto.User;
 import dev.ozkan.ratingapp.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
