@@ -20,7 +20,7 @@ public class RegistrationController {
     ResponseEntity<?> register(@RequestBody RegistrationRequest request){
         var result = registrationService.register(request.toServiceRequest());
         if (!result.isSuccess()){
-            BusinessResultHandler.handleFailureReason(result.getReason(),result.getMessage());
+            return BusinessResultHandler.handleFailureReason(result.getReason(),result.getMessage());
         }
         RegistrationResponse response = new RegistrationResponse(result.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
