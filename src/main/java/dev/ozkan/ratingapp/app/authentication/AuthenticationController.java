@@ -1,11 +1,10 @@
 package dev.ozkan.ratingapp.app.authentication;
 
 import dev.ozkan.ratingapp.core.authentication.AuthenticationService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping
+@Validated
 public class AuthenticationController {
     private final AuthenticationService service;
 
@@ -23,7 +23,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/auth/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request){
         var result = service.authenticate(request.toServiceRequest());
         if (result.isSuccess()){
             return ResponseEntity.ok(Map.of("token",result.getMessage()));
