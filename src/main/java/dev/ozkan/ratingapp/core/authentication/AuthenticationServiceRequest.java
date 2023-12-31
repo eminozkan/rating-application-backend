@@ -1,14 +1,10 @@
 package dev.ozkan.ratingapp.core.authentication;
 
-import jakarta.validation.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 
 public class AuthenticationServiceRequest {
 
-    @Email
     private String email;
 
-    @Length(min = 8)
     private String password;
 
     public String getEmail() {

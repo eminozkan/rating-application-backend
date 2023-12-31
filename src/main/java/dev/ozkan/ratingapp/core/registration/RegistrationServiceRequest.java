@@ -1,12 +1,10 @@
 package dev.ozkan.ratingapp.core.registration;
 
-import jakarta.validation.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 
 public class RegistrationServiceRequest {
-    @Email
+
     private String email;
-    @Length(min = 8)
+
     private String password;
     private String name;
 
