@@ -26,7 +26,7 @@ public class RegistrationController {
             return BusinessResultHandler.handleFailureReason(result.getReason(),result.getMessage());
         }
         RegistrationResponse response = new RegistrationResponse(result.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
 

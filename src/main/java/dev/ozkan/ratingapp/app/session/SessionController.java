@@ -1,7 +1,8 @@
 package dev.ozkan.ratingapp.app.session;
 
 import dev.ozkan.ratingapp.config.UserSession;
-import dev.ozkan.ratingapp.core.dto.User;
+import dev.ozkan.ratingapp.core.model.user.User;
+import dev.ozkan.ratingapp.core.model.user.UserRole;
 import dev.ozkan.ratingapp.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +22,20 @@ public class SessionController {
 
     @GetMapping
     ResponseEntity<?> getSession(UserSession userSession) {
-        final User user = userRepository.getByEmail(userSession.username()).orElseThrow();
-        return new ResponseEntity<>(new SessionPayload(user.getUserId(), user.getEmail()), HttpStatus.OK);
+        return new ResponseEntity<>(new SessionPayload(userSession.id(), userSession.username(),userSession.role()), HttpStatus.OK);
     }
 
 
     public record SessionPayload(
             String id,
-            String email
+            String email,
+            String role
     ) {
-        SessionPayload(User user) {
+        SessionPayload(String id, String email, UserRole role) {
             this(
-                    user.getUserId(),
-                    user.getEmail()
+                    id,
+                    email,
+                    role.name()
             );
         }
     }

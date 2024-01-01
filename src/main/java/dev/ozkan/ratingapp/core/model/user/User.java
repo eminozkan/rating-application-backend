@@ -1,4 +1,4 @@
-package dev.ozkan.ratingapp.core.dto;
+package dev.ozkan.ratingapp.core.model.user;
 
 import jakarta.validation.constraints.Email;
 import org.springframework.data.annotation.Id;
@@ -82,6 +82,10 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+    }
+
+    public UserRole getRole() {
+        return role;
     }
 
     @Override

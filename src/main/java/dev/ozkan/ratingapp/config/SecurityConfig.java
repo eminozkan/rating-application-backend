@@ -1,6 +1,7 @@
 package dev.ozkan.ratingapp.config;
 
 import dev.ozkan.ratingapp.config.jwt.JwtAuthenticationFilter;
+import dev.ozkan.ratingapp.core.model.user.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

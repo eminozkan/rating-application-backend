@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.repository;
 
-import dev.ozkan.ratingapp.core.dto.User;
+import dev.ozkan.ratingapp.core.model.user.User;
 
 import java.util.Optional;
 
