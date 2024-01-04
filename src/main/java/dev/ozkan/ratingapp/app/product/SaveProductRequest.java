@@ -34,7 +34,7 @@ public record SaveProductRequest(
                 .setBase64Image(base64Image);
 
         try {
-            request.setCategory(Category.valueOf(category));
+            request.setCategory(Category.valueOf(category.toUpperCase()));
         } catch (Exception e) {
             throw new WrongCategoryNameException("invalid category name");
         }
