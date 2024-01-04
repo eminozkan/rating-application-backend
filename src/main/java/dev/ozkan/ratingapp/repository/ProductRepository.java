@@ -11,4 +11,6 @@ public interface ProductRepository {
     List<Product> findAll();
 
     Optional<Product> getProductByMakerAndModel(String maker,String model);
+
+    Optional<Product> getById(String id);
 }

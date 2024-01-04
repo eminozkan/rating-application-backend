@@ -8,6 +8,17 @@ public class SaveProductServiceRequest {
     private String externalURL;
     private Category category;
 
+    private String base64Image;
+
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public SaveProductServiceRequest setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+        return this;
+    }
+
     public String getMaker() {
         return maker;
     }

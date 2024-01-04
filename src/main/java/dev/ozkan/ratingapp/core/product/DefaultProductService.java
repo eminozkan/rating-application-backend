@@ -2,6 +2,8 @@ package dev.ozkan.ratingapp.core.product;
 
 import dev.ozkan.ratingapp.business.core.result.CreationResult;
 import dev.ozkan.ratingapp.business.core.result.OperationFailureReason;
+import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
+import dev.ozkan.ratingapp.core.model.product.Category;
 import dev.ozkan.ratingapp.core.model.product.Product;
 import dev.ozkan.ratingapp.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
@@ -9,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -43,11 +47,43 @@ public class DefaultProductService implements ProductService{
                 .setMaker(request.getMaker())
                 .setModel(request.getModel())
                 .setExternalURL(request.getExternalURL())
-                .setCategory(request.getCategory());
+                .setCategory(request.getCategory())
+                .setBase64Image(request.getBase64Image());
 
         productRepository.save(product);
         return CreationResult.success("""
                     { "message" : "Product has been saved successfully"}
                 """);
+    }
+
+    @Override
+    public List<Product> getProducts(String filterText) throws WrongCategoryNameException {
+        if (ObjectUtils.isEmpty(filterText)){
+            return productRepository.findAll();
+        }
+
+        Category category = getCategory(filterText);
+        var products = productRepository.findAll();
+        var result = products.stream()
+                .filter(
+                        (product -> product.getCategory().equals(category))
+                );
+
+        return result.toList();
+    }
+
+    private Category getCategory(String filterText) throws WrongCategoryNameException {
+        Category category;
+        try{
+            category = Category.valueOf(filterText.toUpperCase());
+        }catch (Exception ex){
+            throw new WrongCategoryNameException("invalid category name");
+        }
+        return category;
+    }
+
+    @Override
+    public Optional<Product> getProduct(String productId) {
+        return productRepository.getById(productId);
     }
 }

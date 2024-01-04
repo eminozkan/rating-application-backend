@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.core.model.product;
 
-public enum Category {
+public enum Category{
     PHONE,
     COMPUTER,
     SMART_WATCH,

@@ -31,4 +31,21 @@ public class ProductController {
         return new ResponseEntity<>(new ResponseMessage().setMessage("successfully created"),HttpStatus.CREATED);
     }
 
+
+    @GetMapping("/products")
+    ResponseEntity<?> getProducts(@RequestParam(required = false) String category) throws WrongCategoryNameException {
+        var result = productService.getProducts(category);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/products/{productId}")
+    ResponseEntity<?> getProduct(@PathVariable String productId){
+        var result = productService.getProduct(productId);
+        if (result.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage().setMessage("Product not found."));
+        }
+        return ResponseEntity.ok(result.get());
+    }
 }
