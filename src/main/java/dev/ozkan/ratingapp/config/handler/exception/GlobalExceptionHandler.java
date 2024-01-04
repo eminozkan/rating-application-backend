@@ -20,6 +20,13 @@ public class GlobalExceptionHandler {
                 .body(Map.of("message", message.getMessages()));
     }
 
+    @ExceptionHandler({WrongCategoryNameException.class})
+    public ResponseEntity<?> handleWrongCategoryNameException(WrongCategoryNameException ex){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message",ex.getMessage()));
+    }
+
 
 
 

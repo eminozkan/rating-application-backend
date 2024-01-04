@@ -1,4 +1,6 @@
 package dev.ozkan.ratingapp.config;
 
-public record UserSession(String id, String username){
+import dev.ozkan.ratingapp.core.model.user.UserRole;
+
+public record UserSession(String id, String username, UserRole role){
 }

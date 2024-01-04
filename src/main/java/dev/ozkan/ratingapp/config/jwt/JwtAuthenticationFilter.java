@@ -2,6 +2,8 @@ package dev.ozkan.ratingapp.config.jwt;
 
 import dev.ozkan.ratingapp.config.UserSession;
 import dev.ozkan.ratingapp.core.jwt.JwtService;
+import dev.ozkan.ratingapp.core.model.user.User;
+import dev.ozkan.ratingapp.core.model.user.UserRole;
 import dev.ozkan.ratingapp.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,8 +47,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
+        UserRole role = UserRole.STANDARD;
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            var user = (User) userDetails;
+            if (user.getRole() == UserRole.ADMIN){
+                role = UserRole.ADMIN;
+            }
             if(jwtService.isTokenValid(jwt,userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -60,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         String userId = userRepository.getByEmail(userEmail).get().getUserId();
-        var session = new UserSession(userId,userEmail);
+        var session = new UserSession(userId,userEmail,role);
         request.setAttribute("SESSION",session);
         filterChain.doFilter(request,response);
     }
