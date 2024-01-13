@@ -39,7 +39,7 @@ public class DefaultRegistrationService implements RegistrationService {
                 .setEmail(request.getEmail())
                 .setPasswordHash(passwordHash)
                 .setName(request.getName())
-                .setRole(UserRole.STANDARD)
+                .setRole(UserRole.ROLE_USER)
                 .setLocked(false)
                 .setEnabled(true);
 

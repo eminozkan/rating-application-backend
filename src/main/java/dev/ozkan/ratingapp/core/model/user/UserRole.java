@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.core.model.user;
 
 public enum UserRole {
-    STANDARD,
-    ADMIN
+    ROLE_USER,
+    ROLE_ADMIN
 }
