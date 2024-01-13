@@ -21,9 +21,6 @@ public class ProductController {
 
     @PutMapping("/admin/products")
     ResponseEntity<?> addProduct(UserSession userSession,@RequestBody SaveProductRequest request) throws WrongCategoryNameException {
-        if (userSession.role() != UserRole.ADMIN){
-            return new ResponseEntity<>(new ResponseMessage().setMessage("Unauthorized user"),HttpStatus.UNAUTHORIZED);
-        }
         var result = productService.saveProduct(request.toServiceRequest());
         if (!result.isSuccess()){
             return BusinessResultHandler.handleFailureReason(result.getReason(),result.getMessage());
