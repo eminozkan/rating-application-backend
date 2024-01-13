@@ -1,33 +1,33 @@
 package dev.ozkan.ratingapp.support.result;
 
-public class CreationResult{
+public class CrudResult {
     private OperationResult  result;
     private OperationFailureReason reason;
 
 
     private String message;
 
-    private CreationResult(){}
+    private CrudResult(){}
 
-    public static CreationResult success(){
-        return new CreationResult()
+    public static CrudResult success(){
+        return new CrudResult()
                 .setResult(OperationResult.SUCCESS);
     }
 
-    public static CreationResult success(String message){
-        return new CreationResult()
+    public static CrudResult success(String message){
+        return new CrudResult()
                 .setResult(OperationResult.SUCCESS)
                 .setMessage(message);
     }
 
-    public static  CreationResult failure(OperationFailureReason reason){
-        return new CreationResult()
+    public static CrudResult failure(OperationFailureReason reason){
+        return new CrudResult()
                 .setResult(OperationResult.FAILED)
                 .setReason(reason);
     }
 
-    public static CreationResult failure(OperationFailureReason reason,String message){
-        return new CreationResult()
+    public static CrudResult failure(OperationFailureReason reason, String message){
+        return new CrudResult()
                 .setResult(OperationResult.FAILED)
                 .setReason(reason)
                 .setMessage(message);
@@ -40,7 +40,7 @@ public class CreationResult{
     public boolean isSuccess(){
         return result.equals(OperationResult.SUCCESS);
     }
-    private CreationResult setResult(OperationResult result) {
+    private CrudResult setResult(OperationResult result) {
         this.result = result;
         return this;
     }
@@ -49,7 +49,7 @@ public class CreationResult{
         return reason;
     }
 
-    private CreationResult setReason(OperationFailureReason reason) {
+    private CrudResult setReason(OperationFailureReason reason) {
         this.reason = reason;
         return this;
     }
@@ -59,7 +59,7 @@ public class CreationResult{
         return message;
     }
 
-    private CreationResult setMessage(String message) {
+    private CrudResult setMessage(String message) {
         this.message = message;
         return this;
     }

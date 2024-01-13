@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.core.registration;
 
-import dev.ozkan.ratingapp.support.result.CreationResult;
+import dev.ozkan.ratingapp.support.result.CrudResult;
 import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import dev.ozkan.ratingapp.core.model.user.User;
 import dev.ozkan.ratingapp.core.model.user.UserRole;
@@ -26,11 +26,11 @@ public class DefaultRegistrationService implements RegistrationService {
     }
 
     @Override
-    public CreationResult register(RegistrationServiceRequest request) {
+    public CrudResult register(RegistrationServiceRequest request) {
         Optional<User> userWithEmailOptional = userRepository.getByEmail(request.getEmail());
         if (userWithEmailOptional.isPresent()) {
             logger.debug("User {} has already registered.", request.getEmail());
-            return CreationResult.failure(OperationFailureReason.CONFLICT, "User has already registered");
+            return CrudResult.failure(OperationFailureReason.CONFLICT, "User has already registered");
         }
 
         String passwordHash = userPasswordEncoder.encodePassword(request.getPassword());
@@ -44,6 +44,6 @@ public class DefaultRegistrationService implements RegistrationService {
                 .setEnabled(true);
 
         userRepository.save(user);
-        return CreationResult.success(user.getUserId());
+        return CrudResult.success(user.getUserId());
     }
 }

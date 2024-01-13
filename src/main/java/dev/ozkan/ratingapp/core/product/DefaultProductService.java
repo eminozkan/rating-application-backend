@@ -1,12 +1,11 @@
 package dev.ozkan.ratingapp.core.product;
 
-import dev.ozkan.ratingapp.support.result.CreationResult;
+import dev.ozkan.ratingapp.support.result.CrudResult;
 import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
 import dev.ozkan.ratingapp.core.model.product.Category;
 import dev.ozkan.ratingapp.core.model.product.Product;
 import dev.ozkan.ratingapp.repository.ProductRepository;
-import dev.ozkan.ratingapp.support.result.UpdateResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -28,19 +27,19 @@ public class DefaultProductService implements ProductService{
     }
 
     @Override
-    public CreationResult saveProduct(SaveProductServiceRequest request) {
+    public CrudResult saveProduct(SaveProductServiceRequest request) {
         if (ObjectUtils.isEmpty(request.getMaker())){
             logger.debug("Product can't saved. Reason : empty maker name");
-            return CreationResult.failure(OperationFailureReason.PRECONDITION_FAILED,"Empty maker name");
+            return CrudResult.failure(OperationFailureReason.PRECONDITION_FAILED,"Empty maker name");
         }
         if (ObjectUtils.isEmpty(request.getModel())){
             logger.debug("Product can't saved. Reason : empty model name");
-            return CreationResult.failure(OperationFailureReason.PRECONDITION_FAILED,"Empty model name");
+            return CrudResult.failure(OperationFailureReason.PRECONDITION_FAILED,"Empty model name");
         }
 
         if (productRepository.getProductByMakerAndModel(request.getMaker(), request.getModel()).isPresent()){
             logger.debug("Product can't saved. Reason : product already exist");
-            return CreationResult.failure(OperationFailureReason.CONFLICT,"Already exist product");
+            return CrudResult.failure(OperationFailureReason.CONFLICT,"Already exist product");
         }
 
         var product = new Product()
@@ -54,7 +53,7 @@ public class DefaultProductService implements ProductService{
                 .setRatingOutOfFive(0.0);
 
         productRepository.save(product);
-        return CreationResult.success("""
+        return CrudResult.success("""
                     { "message" : "Product has been saved successfully"}
                 """);
     }
@@ -91,10 +90,10 @@ public class DefaultProductService implements ProductService{
     }
 
     @Override
-    public UpdateResult updateProductRating(String productId, int ratingOutOfFive) {
+    public CrudResult updateProductRating(String productId, int ratingOutOfFive) {
         var productOptional = productRepository.getById(productId);
         if (productOptional.isEmpty()){
-            return UpdateResult.failed(OperationFailureReason.NOT_FOUND,"product not found by id");
+            return CrudResult.failure(OperationFailureReason.NOT_FOUND,"product not found by id");
         }
         var productFromDb = productOptional.get();
         productFromDb.updateRating(ratingOutOfFive);
@@ -102,7 +101,7 @@ public class DefaultProductService implements ProductService{
         roundRatingPrecision(productFromDb);
 
         productRepository.save(productFromDb);
-        return UpdateResult.success();
+        return CrudResult.success();
     }
 
     private static void roundRatingPrecision(Product productFromDb) {
