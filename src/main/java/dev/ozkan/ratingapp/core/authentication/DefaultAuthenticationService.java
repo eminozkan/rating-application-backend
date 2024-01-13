@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.core.authentication;
 
-import dev.ozkan.ratingapp.support.result.AuthenticationResult;
+import dev.ozkan.ratingapp.support.result.CrudResult;
 import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import dev.ozkan.ratingapp.core.jwt.JwtService;
 import dev.ozkan.ratingapp.core.user.UserPasswordEncoder;
@@ -24,19 +24,19 @@ public class DefaultAuthenticationService implements AuthenticationService{
     }
 
     @Override
-    public AuthenticationResult authenticate(AuthenticationServiceRequest request) {
+    public CrudResult authenticate(AuthenticationServiceRequest request) {
         var userOptional = userRepository.getByEmail(request.getEmail());
         if (userOptional.isEmpty()){
             logger.debug("User {} has not found.",request.getEmail());
-            return AuthenticationResult.failed(OperationFailureReason.NOT_FOUND,"User has not found");
+            return CrudResult.failure(OperationFailureReason.NOT_FOUND,"User has not found");
         }
         var userFromDb = userOptional.get();
         if(!userPasswordEncoder.matches(request.getPassword(),userFromDb.getPasswordHash())){
             logger.debug("User {} tried to login with wrong password.",request.getEmail());
-            return AuthenticationResult.failed(OperationFailureReason.UNAUTHORIZED,"Invalid credentials");
+            return CrudResult.failure(OperationFailureReason.UNAUTHORIZED,"Invalid credentials");
         }
 
         var jwtToken = jwtService.generateToken(userFromDb);
-        return AuthenticationResult.success(jwtToken);
+        return CrudResult.success(jwtToken);
     }
 }

@@ -1,7 +1,7 @@
 package dev.ozkan.ratingapp.core.authentication;
 
-import dev.ozkan.ratingapp.support.result.AuthenticationResult;
+import dev.ozkan.ratingapp.support.result.CrudResult;
 
 public interface AuthenticationService {
-    AuthenticationResult authenticate(AuthenticationServiceRequest request);
+    CrudResult authenticate(AuthenticationServiceRequest request);
 }
