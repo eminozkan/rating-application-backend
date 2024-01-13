@@ -49,6 +49,12 @@ public class DefaultCommentService implements CommentService{
             return CreationResult.failure(OperationFailureReason.NOT_FOUND,"Product not found.");
         }
 
+        var commentOptional = commentRepository.getByProductIdAndUserId(request.getProductId(),commentOwnerId);
+        if (commentOptional.isPresent()){
+            logger.debug("Add Comment failed. Reason : User {} has already commented in this product.",commentOwnerId);
+            return CreationResult.failure(OperationFailureReason.CONFLICT,"Already commented.");
+        }
+
         productService.updateProductRating(request.getProductId(), request.getRating());
         var createdComment = new Comment()
                 .setCommentId(UUID.randomUUID().toString())

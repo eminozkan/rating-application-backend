@@ -93,6 +93,27 @@ class DefaultCommentServiceTest {
             assertEquals(OperationFailureReason.NOT_FOUND, result.getReason());
         }
 
+        @DisplayName("Already commented")
+        @Test
+        void alreadyCommented() {
+            AddCommentServiceRequest request = new AddCommentServiceRequest()
+                    .setRating(4)
+                    .setUsageTime("3-6")
+                    .setProductId("product-id");
+
+            Mockito.doReturn(Optional.of(new Product()))
+                    .when(productRepository)
+                    .getById(request.getProductId());
+
+            Mockito.doReturn(Optional.of(new Comment()))
+                    .when(commentRepository)
+                    .getByProductIdAndUserId(request.getProductId(),"user-id");
+
+            var result = service.addComment(request, "user-id");
+            assertFalse(result.isSuccess());
+            assertEquals(OperationFailureReason.CONFLICT, result.getReason());
+        }
+
         @DisplayName("Success")
         @Test
         void success() {

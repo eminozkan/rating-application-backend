@@ -98,7 +98,16 @@ public class DefaultProductService implements ProductService{
         }
         var productFromDb = productOptional.get();
         productFromDb.updateRating(ratingOutOfFive);
+
+        roundRatingPrecision(productFromDb);
+
         productRepository.save(productFromDb);
         return UpdateResult.success();
+    }
+
+    private static void roundRatingPrecision(Product productFromDb) {
+        double rating = productFromDb.getRatingOutOfFive();
+        rating = Math.round(rating * Math.pow(10, 2)) / Math.pow(10, 2);
+        productFromDb.setRatingOutOfFive(rating);
     }
 }
