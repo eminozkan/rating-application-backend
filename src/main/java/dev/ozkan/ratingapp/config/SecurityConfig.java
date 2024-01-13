@@ -28,6 +28,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMIN")
                         .requestMatchers("/auth/login","/auth/register","/auth/verify")
                         .permitAll()
                         .anyRequest()
