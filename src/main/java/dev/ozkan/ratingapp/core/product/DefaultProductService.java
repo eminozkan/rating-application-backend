@@ -125,4 +125,9 @@ public class DefaultProductService implements ProductService{
         productRepository.save(productFromDb);
         return CrudResult.success();
     }
+
+    @Override
+    public List<Category> getCategories() {
+        return List.of(Category.values());
+    }
 }

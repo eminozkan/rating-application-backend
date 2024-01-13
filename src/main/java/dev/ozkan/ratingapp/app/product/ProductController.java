@@ -44,4 +44,10 @@ public class ProductController {
         }
         return ResponseEntity.ok(result.get());
     }
+
+    @GetMapping("/categories")
+    ResponseEntity<?> getCategories(){
+        var result = productService.getCategories();
+        return ResponseEntity.ok(result);
+    }
 }
