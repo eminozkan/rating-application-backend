@@ -1,11 +1,9 @@
-package dev.ozkan.ratingapp.business.core.resulthandler;
+package dev.ozkan.ratingapp.support.resulthandler;
 
-import dev.ozkan.ratingapp.business.core.ResponseMessage;
-import dev.ozkan.ratingapp.business.core.result.OperationFailureReason;
+import dev.ozkan.ratingapp.support.response.ResponseMessage;
+import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Map;
 
 public class BusinessResultHandler {
 

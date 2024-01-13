@@ -1,4 +1,4 @@
-package dev.ozkan.ratingapp.business.core;
+package dev.ozkan.ratingapp.support.response;
 
 public class ResponseMessage{
     private String message;

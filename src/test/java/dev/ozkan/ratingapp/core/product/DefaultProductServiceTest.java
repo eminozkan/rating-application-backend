@@ -1,10 +1,10 @@
 package dev.ozkan.ratingapp.core.product;
 
-import dev.ozkan.ratingapp.business.core.result.OperationFailureReason;
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
 import dev.ozkan.ratingapp.core.model.product.Category;
 import dev.ozkan.ratingapp.core.model.product.Product;
 import dev.ozkan.ratingapp.repository.ProductRepository;
+import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,6 +30,9 @@ class DefaultProductServiceTest {
 
     DefaultProductService service;
 
+    @Captor
+    ArgumentCaptor<Product> productArgumentCaptor;
+
     @BeforeEach
     void setUp() {
         service = new DefaultProductService(repository);
@@ -38,8 +41,6 @@ class DefaultProductServiceTest {
     @Nested
     class Save {
 
-        @Captor
-        ArgumentCaptor<Product> productArgumentCaptor;
 
         @DisplayName("Try to Save with Empty Maker Name")
         @Test
@@ -213,6 +214,79 @@ class DefaultProductServiceTest {
             var result = service.getProduct(id);
             assertThat(result).isNotEmpty();
             assertThat(result.get()).isEqualTo(p);
+        }
+    }
+
+    @Nested
+    class UpdateProductRating {
+        @DisplayName("Wrong id")
+        @Test
+        void wrongId() {
+            String productId = "wrong-id";
+            int productRating = 3;
+            Mockito.doReturn(Optional.empty())
+                    .when(repository)
+                    .getById(productId);
+
+            var result = service.updateProductRating(productId, productRating);
+
+            assertFalse(result.isSuccess());
+            assertEquals(OperationFailureReason.NOT_FOUND, result.getReason());
+        }
+
+        @DisplayName("success")
+        @Test
+        void success() {
+            Product p = new Product()
+                    .setId("product-id")
+                    .setRatingOutOfFive(3.0)
+                    .setCommentCount(1);
+
+            String productId = "wrong-id";
+            int productRating = 5;
+            Mockito.doReturn(Optional.of(p))
+                    .when(repository)
+                    .getById(productId);
+
+            var result = service.updateProductRating(productId, productRating);
+            assertTrue(result.isSuccess());
+
+
+            Mockito.verify(repository)
+                    .save(productArgumentCaptor.capture());
+
+            var capturedProduct = productArgumentCaptor.getValue();
+
+            assertEquals(4.0, capturedProduct.getRatingOutOfFive());
+
+        }
+
+
+        @DisplayName("success with different rating")
+        @Test
+        void successWithDifferentRating() {
+            Product p = new Product()
+                    .setId("product-id")
+                    .setRatingOutOfFive(2.5)
+                    .setCommentCount(4);
+
+            String productId = "wrong-id";
+            int productRating = 5;
+            Mockito.doReturn(Optional.of(p))
+                    .when(repository)
+                    .getById(productId);
+
+            var result = service.updateProductRating(productId, productRating);
+            assertTrue(result.isSuccess());
+
+
+            Mockito.verify(repository)
+                    .save(productArgumentCaptor.capture());
+
+            var capturedProduct = productArgumentCaptor.getValue();
+
+            assertEquals(3.0, capturedProduct.getRatingOutOfFive());
+
         }
     }
 }

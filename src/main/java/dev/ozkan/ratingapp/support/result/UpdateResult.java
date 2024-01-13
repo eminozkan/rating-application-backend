@@ -1,31 +1,30 @@
-package dev.ozkan.ratingapp.business.core.result;
+package dev.ozkan.ratingapp.support.result;
 
-public class AuthenticationResult{
-
+public class UpdateResult {
     private Boolean isSuccess;
     private String message;
     private OperationFailureReason reason;
 
-    private AuthenticationResult(){}
+    private UpdateResult(){}
 
-    public static AuthenticationResult success(){
-        return new AuthenticationResult()
+    public static UpdateResult success(){
+        return new UpdateResult()
                 .setSuccess(true);
     }
 
-    public static AuthenticationResult success(String message){
-        return new AuthenticationResult()
+    public static UpdateResult success(String message){
+        return new UpdateResult()
                 .setSuccess(true)
                 .setMessage(message);
     }
-    public static AuthenticationResult failed(OperationFailureReason reason){
-        return new AuthenticationResult()
+    public static UpdateResult failed(OperationFailureReason reason){
+        return new UpdateResult()
                 .setReason(reason)
                 .setSuccess(false);
     }
 
-    public static AuthenticationResult failed(OperationFailureReason reason, String message){
-        return new AuthenticationResult()
+    public static UpdateResult failed(OperationFailureReason reason, String message){
+        return new UpdateResult()
                 .setMessage(message)
                 .setSuccess(false)
                 .setReason(reason);
@@ -35,7 +34,7 @@ public class AuthenticationResult{
         return isSuccess;
     }
 
-    public AuthenticationResult setSuccess(Boolean success) {
+    public UpdateResult setSuccess(Boolean success) {
         isSuccess = success;
         return this;
     }
@@ -44,7 +43,7 @@ public class AuthenticationResult{
         return message;
     }
 
-    public AuthenticationResult setMessage(String message) {
+    public UpdateResult setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -53,7 +52,7 @@ public class AuthenticationResult{
         return reason;
     }
 
-    public AuthenticationResult setReason(OperationFailureReason reason) {
+    public UpdateResult setReason(OperationFailureReason reason) {
         this.reason = reason;
         return this;
     }

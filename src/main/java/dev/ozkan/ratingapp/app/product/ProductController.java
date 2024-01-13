@@ -1,11 +1,10 @@
 package dev.ozkan.ratingapp.app.product;
 
-import dev.ozkan.ratingapp.business.core.ResponseMessage;
-import dev.ozkan.ratingapp.business.core.resulthandler.BusinessResultHandler;
 import dev.ozkan.ratingapp.config.UserSession;
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
-import dev.ozkan.ratingapp.core.model.user.UserRole;
 import dev.ozkan.ratingapp.core.product.ProductService;
+import dev.ozkan.ratingapp.support.response.ResponseMessage;
+import dev.ozkan.ratingapp.support.resulthandler.BusinessResultHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class ProductController {
     }
 
     @PutMapping("/admin/products")
-    ResponseEntity<?> addProduct(@RequestBody SaveProductRequest request) throws WrongCategoryNameException {
+    ResponseEntity<?> addProduct(UserSession userSession,@RequestBody SaveProductRequest request) throws WrongCategoryNameException {
         var result = productService.saveProduct(request.toServiceRequest());
         if (!result.isSuccess()){
             return BusinessResultHandler.handleFailureReason(result.getReason(),result.getMessage());

@@ -1,11 +1,12 @@
 package dev.ozkan.ratingapp.core.product;
 
-import dev.ozkan.ratingapp.business.core.result.CreationResult;
-import dev.ozkan.ratingapp.business.core.result.OperationFailureReason;
+import dev.ozkan.ratingapp.support.result.CreationResult;
+import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
 import dev.ozkan.ratingapp.core.model.product.Category;
 import dev.ozkan.ratingapp.core.model.product.Product;
 import dev.ozkan.ratingapp.repository.ProductRepository;
+import dev.ozkan.ratingapp.support.result.UpdateResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,9 @@ public class DefaultProductService implements ProductService{
                 .setModel(request.getModel())
                 .setExternalURL(request.getExternalURL())
                 .setCategory(request.getCategory())
-                .setBase64Image(request.getBase64Image());
+                .setBase64Image(request.getBase64Image())
+                .setCommentCount(0L)
+                .setRatingOutOfFive(0.0);
 
         productRepository.save(product);
         return CreationResult.success("""
@@ -85,5 +88,26 @@ public class DefaultProductService implements ProductService{
     @Override
     public Optional<Product> getProduct(String productId) {
         return productRepository.getById(productId);
+    }
+
+    @Override
+    public UpdateResult updateProductRating(String productId, int ratingOutOfFive) {
+        var productOptional = productRepository.getById(productId);
+        if (productOptional.isEmpty()){
+            return UpdateResult.failed(OperationFailureReason.NOT_FOUND,"product not found by id");
+        }
+        var productFromDb = productOptional.get();
+        productFromDb.updateRating(ratingOutOfFive);
+
+        roundRatingPrecision(productFromDb);
+
+        productRepository.save(productFromDb);
+        return UpdateResult.success();
+    }
+
+    private static void roundRatingPrecision(Product productFromDb) {
+        double rating = productFromDb.getRatingOutOfFive();
+        rating = Math.round(rating * Math.pow(10, 2)) / Math.pow(10, 2);
+        productFromDb.setRatingOutOfFive(rating);
     }
 }

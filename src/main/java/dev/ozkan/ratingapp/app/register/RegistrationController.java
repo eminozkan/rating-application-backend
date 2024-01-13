@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.app.register;
 
-import dev.ozkan.ratingapp.business.core.resulthandler.BusinessResultHandler;
+import dev.ozkan.ratingapp.support.resulthandler.BusinessResultHandler;
 import dev.ozkan.ratingapp.core.registration.RegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
