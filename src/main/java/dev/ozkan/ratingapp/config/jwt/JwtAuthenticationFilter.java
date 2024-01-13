@@ -47,12 +47,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
-        UserRole role = UserRole.STANDARD;
+        UserRole role = UserRole.ROLE_USER;
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             var user = (User) userDetails;
-            if (user.getRole() == UserRole.ADMIN){
-                role = UserRole.ADMIN;
+            if (user.getRole() == UserRole.ROLE_ADMIN){
+                role = UserRole.ROLE_ADMIN;
             }
             if(jwtService.isTokenValid(jwt,userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
