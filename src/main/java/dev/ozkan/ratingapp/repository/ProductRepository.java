@@ -13,4 +13,6 @@ public interface ProductRepository {
     Optional<Product> getProductByMakerAndModel(String maker,String model);
 
     Optional<Product> getById(String id);
+
+    void deleteById(String productId);
 }

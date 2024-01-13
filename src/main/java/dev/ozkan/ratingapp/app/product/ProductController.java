@@ -19,12 +19,18 @@ public class ProductController {
     }
 
     @PutMapping("/admin/products")
-    ResponseEntity<?> addProduct(UserSession userSession,@RequestBody SaveProductRequest request) throws WrongCategoryNameException {
+    ResponseEntity<?> addProduct(@RequestBody SaveProductRequest request) throws WrongCategoryNameException {
         var result = productService.saveProduct(request.toServiceRequest());
         if (!result.isSuccess()){
             return BusinessResultHandler.handleFailureReason(result.getReason(),result.getMessage());
         }
         return new ResponseEntity<>(new ResponseMessage().setMessage("successfully created"),HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/admin/products/{productId}")
+    ResponseEntity<?> deleteProduct(@PathVariable String productId){
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
