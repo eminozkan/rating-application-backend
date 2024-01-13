@@ -11,4 +11,8 @@ public interface CommentRepository {
     List<Comment> findAllByProductId(String productId);
 
     Optional<Comment> getByProductIdAndUserId(String productId, String commentOwnerId);
+
+    Optional<Comment> getByCommentId(String commentId);
+
+    void deleteById(String commentId);
 }

@@ -1,5 +1,6 @@
 package dev.ozkan.ratingapp.core.product;
 
+import dev.ozkan.ratingapp.core.model.comment.Comment;
 import dev.ozkan.ratingapp.support.result.CrudResult;
 import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
@@ -108,5 +109,20 @@ public class DefaultProductService implements ProductService{
         double rating = productFromDb.getRatingOutOfFive();
         rating = Math.round(rating * Math.pow(10, 2)) / Math.pow(10, 2);
         productFromDb.setRatingOutOfFive(rating);
+    }
+
+    @Override
+    public CrudResult reduceProductRating(Comment comment) {
+        var productOptional = productRepository.getById(comment.getProductId());
+        if (productOptional.isEmpty()){
+            return CrudResult.failure(OperationFailureReason.NOT_FOUND,"product not found by id");
+        }
+        var productFromDb = productOptional.get();
+        productFromDb.reduceProductRating(comment.getRating());
+
+        roundRatingPrecision(productFromDb);
+
+        productRepository.save(productFromDb);
+        return CrudResult.success();
     }
 }

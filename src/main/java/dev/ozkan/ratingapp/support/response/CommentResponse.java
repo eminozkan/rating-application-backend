@@ -6,12 +6,25 @@ import dev.ozkan.ratingapp.core.model.comment.UsageTime;
 import java.time.Instant;
 
 public class CommentResponse {
+    private String commentId;
+
     private String commentText;
+
     private Rating rating;
 
     private UsageTime usageTime;
 
     private Instant createdAt;
+
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public CommentResponse setCommentId(String commentId) {
+        this.commentId = commentId;
+        return this;
+    }
 
     public String getCommentText() {
         return commentText;

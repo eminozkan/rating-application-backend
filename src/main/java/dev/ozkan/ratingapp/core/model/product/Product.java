@@ -1,5 +1,6 @@
 package dev.ozkan.ratingapp.core.model.product;
 
+import dev.ozkan.ratingapp.core.model.comment.Rating;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -99,6 +100,13 @@ public class Product {
         double totalRating = this.ratingOutOfFive * commentCount;
         commentCount++;
         totalRating+= ratingOutOfFive;
+        this.ratingOutOfFive = totalRating / commentCount;
+    }
+
+    public void reduceProductRating(Rating rating) {
+        double totalRating = this.ratingOutOfFive * commentCount;
+        commentCount--;
+        totalRating -= Rating.value(rating);
         this.ratingOutOfFive = totalRating / commentCount;
     }
 }
