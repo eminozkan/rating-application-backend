@@ -21,4 +21,6 @@ public interface ProductService {
     CrudResult reduceProductRating(Comment comment);
 
     List<Category> getCategories();
+
+    void deleteProduct(String productId);
 }

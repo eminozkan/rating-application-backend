@@ -130,4 +130,9 @@ public class DefaultProductService implements ProductService{
     public List<Category> getCategories() {
         return List.of(Category.values());
     }
+
+    @Override
+    public void deleteProduct(String productId) {
+        productRepository.deleteById(productId);
+    }
 }
