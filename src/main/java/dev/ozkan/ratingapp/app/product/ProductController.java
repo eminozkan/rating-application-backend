@@ -1,10 +1,9 @@
 package dev.ozkan.ratingapp.app.product;
 
-import dev.ozkan.ratingapp.business.core.ResponseMessage;
-import dev.ozkan.ratingapp.business.core.resulthandler.BusinessResultHandler;
+import dev.ozkan.ratingapp.support.response.ResponseMessage;
+import dev.ozkan.ratingapp.support.resulthandler.BusinessResultHandler;
 import dev.ozkan.ratingapp.config.UserSession;
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
-import dev.ozkan.ratingapp.core.model.user.UserRole;
 import dev.ozkan.ratingapp.core.product.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

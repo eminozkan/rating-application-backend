@@ -1,4 +1,4 @@
-package dev.ozkan.ratingapp.business.core.result;
+package dev.ozkan.ratingapp.support.result;
 
 public enum OperationFailureReason {
     NOT_FOUND,

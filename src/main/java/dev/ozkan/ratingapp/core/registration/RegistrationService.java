@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.core.registration;
 
-import dev.ozkan.ratingapp.business.core.result.CreationResult;
+import dev.ozkan.ratingapp.support.result.CreationResult;
 
 
 public interface RegistrationService {

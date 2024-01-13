@@ -1,7 +1,7 @@
 package dev.ozkan.ratingapp.core.product;
 
-import dev.ozkan.ratingapp.business.core.result.CreationResult;
-import dev.ozkan.ratingapp.business.core.result.OperationFailureReason;
+import dev.ozkan.ratingapp.support.result.CreationResult;
+import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
 import dev.ozkan.ratingapp.core.model.product.Category;
 import dev.ozkan.ratingapp.core.model.product.Product;

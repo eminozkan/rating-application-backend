@@ -1,6 +1,6 @@
 package dev.ozkan.ratingapp.core.registration;
 
-import dev.ozkan.ratingapp.business.core.result.OperationFailureReason;
+import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import dev.ozkan.ratingapp.core.model.user.User;
 import dev.ozkan.ratingapp.core.user.UserPasswordEncoder;
 import dev.ozkan.ratingapp.repository.UserRepository;
