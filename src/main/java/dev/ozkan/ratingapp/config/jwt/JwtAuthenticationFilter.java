@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        String userId = userRepository.getByEmail(userEmail).get().getUserId();
+        String userId = userRepository.getByEmail(userEmail).orElseThrow().getUserId();
         var session = new UserSession(userId,userEmail,role);
         request.setAttribute("SESSION",session);
         filterChain.doFilter(request,response);

@@ -1,8 +1,7 @@
 
 ![Version](https://img.shields.io/badge/version-0.0.1-orange.svg)
 ![Java](https://img.shields.io/badge/Java-v21.0.1-blue)
-![Maven Tests](https://camo.githubusercontent.com/c98f291887bfc18569ab75202f9e4154dfbc7671ca9b08932c8cb1fdacaeec93/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f74657374732d31352532307061737365642d73756363657373)
-  
+![Maven Tests](https://camo.githubusercontent.com/e7c2d9ab9a335648e1deebe4b1a6e057112a739e3a50cfac02b10f0a3e99c4a2/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f74657374732d32352532307061737365642d73756363657373)
 
 # Rating Application
 
