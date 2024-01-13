@@ -3,6 +3,7 @@ package dev.ozkan.ratingapp.core.comment;
 import dev.ozkan.ratingapp.core.model.comment.Comment;
 import dev.ozkan.ratingapp.core.model.comment.Rating;
 import dev.ozkan.ratingapp.core.model.comment.UsageTime;
+import dev.ozkan.ratingapp.core.model.user.UserRole;
 import dev.ozkan.ratingapp.core.product.ProductService;
 import dev.ozkan.ratingapp.repository.CommentRepository;
 import dev.ozkan.ratingapp.repository.ProductRepository;
@@ -11,6 +12,7 @@ import dev.ozkan.ratingapp.support.result.OperationFailureReason;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
 import java.util.List;
@@ -72,5 +74,23 @@ public class DefaultCommentService implements CommentService{
     @Override
     public List<Comment> getCommentsByProductId(String productId) {
         return commentRepository.findAllByProductId(productId);
+    }
+
+    @Override
+    public CrudResult deleteComment(DeleteCommentServiceRequest request, String userId,UserRole role) {
+        var commentOptional = commentRepository.getByCommentId(request.getCommentId());
+        if (commentOptional.isEmpty()){
+            logger.debug("Delete comment failed. Reason : Comment {} not found.",request.getCommentId());
+            return CrudResult.failure(OperationFailureReason.NOT_FOUND,"Comment not found");
+        }
+        var comment = commentOptional.get();
+        if (!comment.getUserId().equals(userId) && role != UserRole.ROLE_ADMIN){
+            logger.debug("Delete comment failed. Reason : User {} is not comment owner.",request.getCommentId());
+            return CrudResult.failure(OperationFailureReason.UNAUTHORIZED,"Not authorized user.");
+        }
+
+        productService.reduceProductRating(comment);
+        commentRepository.deleteById(request.getCommentId());
+        return CrudResult.success();
     }
 }

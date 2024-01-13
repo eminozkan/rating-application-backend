@@ -1,6 +1,7 @@
 package dev.ozkan.ratingapp.core.product;
 
 import dev.ozkan.ratingapp.config.handler.exception.WrongCategoryNameException;
+import dev.ozkan.ratingapp.core.model.comment.Comment;
 import dev.ozkan.ratingapp.core.model.product.Product;
 import dev.ozkan.ratingapp.support.result.CrudResult;
 
@@ -15,4 +16,6 @@ public interface ProductService {
     Optional<Product> getProduct(String productId);
 
     CrudResult updateProductRating(String productId, int ratingOutOfFive);
+
+    CrudResult reduceProductRating(Comment comment);
 }

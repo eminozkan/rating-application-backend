@@ -4,6 +4,7 @@ import dev.ozkan.ratingapp.core.model.comment.Comment;
 import dev.ozkan.ratingapp.core.model.comment.Rating;
 import dev.ozkan.ratingapp.core.model.comment.UsageTime;
 import dev.ozkan.ratingapp.core.model.product.Product;
+import dev.ozkan.ratingapp.core.model.user.UserRole;
 import dev.ozkan.ratingapp.core.product.ProductService;
 import dev.ozkan.ratingapp.repository.CommentRepository;
 import dev.ozkan.ratingapp.repository.ProductRepository;
@@ -172,6 +173,95 @@ class DefaultCommentServiceTest {
             var result = service.getCommentsByProductId(productId);
             assertThat(result).contains(c1);
             assertThat(result).contains(c2);
+        }
+    }
+
+    @Nested
+    class DeleteComment{
+
+        @DisplayName("Non exist comment")
+        @Test
+        void nonExistComment(){
+
+            var deleteRequest = new DeleteCommentServiceRequest()
+                    .setCommentId("comment-id");
+
+            Mockito.doReturn(Optional.empty())
+                    .when(commentRepository)
+                    .getByCommentId(deleteRequest.getCommentId());
+
+            var result = service.deleteComment(deleteRequest,"user-id", UserRole.ROLE_USER);
+            assertFalse(result.isSuccess());
+            assertEquals(OperationFailureReason.NOT_FOUND,result.getReason());
+
+        }
+        @DisplayName("Unauthorized user")
+        @Test
+        void unauthorizedUser(){
+            var deleteRequest = new DeleteCommentServiceRequest()
+                    .setCommentId("comment-id");
+
+            Comment comment = new Comment()
+                    .setUserId("user-id")
+                    .setCommentText("comment-text");
+
+            Mockito.doReturn(Optional.of(comment))
+                    .when(commentRepository)
+                    .getByCommentId(deleteRequest.getCommentId());
+
+            var result = service.deleteComment(deleteRequest,"unauthorized-user-id",UserRole.ROLE_USER);
+            assertFalse(result.isSuccess());
+            assertEquals(OperationFailureReason.UNAUTHORIZED,result.getReason());
+        }
+
+        @DisplayName("Success with Admin Role")
+        @Test
+        void successWithAdminRole(){
+            var deleteRequest = new DeleteCommentServiceRequest()
+                    .setCommentId("comment-id");
+
+            Comment comment = new Comment()
+                    .setUserId("user-id")
+                    .setCommentText("comment-text");
+
+            Mockito.doReturn(Optional.of(comment))
+                    .when(commentRepository)
+                    .getByCommentId(deleteRequest.getCommentId());
+
+            var result = service.deleteComment(deleteRequest,"wrong-user-id",UserRole.ROLE_ADMIN);
+            assertTrue(result.isSuccess());
+
+            Mockito.verify(commentRepository)
+                    .deleteById(deleteRequest.getCommentId());
+
+            Mockito.verify(productService)
+                    .reduceProductRating(comment);
+
+        }
+
+        @DisplayName("Success")
+        @Test
+        void success(){
+            var deleteRequest = new DeleteCommentServiceRequest()
+                    .setCommentId("comment-id");
+
+            Comment comment = new Comment()
+                    .setUserId("user-id")
+                    .setCommentText("comment-text");
+
+            Mockito.doReturn(Optional.of(comment))
+                    .when(commentRepository)
+                    .getByCommentId(deleteRequest.getCommentId());
+
+            var result = service.deleteComment(deleteRequest,"user-id",UserRole.ROLE_USER);
+            assertTrue(result.isSuccess());
+
+            Mockito.verify(commentRepository)
+                    .deleteById(deleteRequest.getCommentId());
+
+            Mockito.verify(productService)
+                    .reduceProductRating(comment);
+
         }
     }
 }

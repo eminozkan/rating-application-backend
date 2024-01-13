@@ -17,4 +17,14 @@ public enum Rating {
             default -> null;
         };
     }
+
+    public static int value(Rating rating) {
+        return switch (rating) {
+            case ONE -> 1;
+            case TWO -> 2;
+            case THREE -> 3;
+            case FOUR -> 4;
+            case FIVE -> 5;
+        };
+    }
 }
