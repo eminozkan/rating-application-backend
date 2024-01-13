@@ -17,6 +17,10 @@ public class Product {
 
     private Category category;
 
+    private double ratingOutOfFive;
+
+    private long commentCount;
+
     private String base64Image;
 
     public String getBase64Image() {
@@ -71,5 +75,30 @@ public class Product {
     public Product setCategory(Category category) {
         this.category = category;
         return this;
+    }
+
+    public double getRatingOutOfFive() {
+        return ratingOutOfFive;
+    }
+
+    public Product setRatingOutOfFive(double ratingOutOfFive) {
+        this.ratingOutOfFive = ratingOutOfFive;
+        return this;
+    }
+
+    public long getCommentCount() {
+        return commentCount;
+    }
+
+    public Product setCommentCount(long commentCount) {
+        this.commentCount = commentCount;
+        return this;
+    }
+
+    public void updateRating(int ratingOutOfFive) {
+        double totalRating = this.ratingOutOfFive * commentCount;
+        commentCount++;
+        totalRating+= ratingOutOfFive;
+        this.ratingOutOfFive = totalRating / commentCount;
     }
 }

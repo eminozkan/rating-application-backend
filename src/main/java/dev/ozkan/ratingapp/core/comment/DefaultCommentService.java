@@ -3,6 +3,7 @@ package dev.ozkan.ratingapp.core.comment;
 import dev.ozkan.ratingapp.core.model.comment.Comment;
 import dev.ozkan.ratingapp.core.model.comment.Rating;
 import dev.ozkan.ratingapp.core.model.comment.UsageTime;
+import dev.ozkan.ratingapp.core.product.ProductService;
 import dev.ozkan.ratingapp.repository.CommentRepository;
 import dev.ozkan.ratingapp.repository.ProductRepository;
 import dev.ozkan.ratingapp.support.result.CreationResult;
@@ -21,11 +22,14 @@ public class DefaultCommentService implements CommentService{
 
     private final CommentRepository commentRepository;
 
+    private final ProductService productService;
+
     private final Logger logger = LogManager.getLogger();
 
-    public DefaultCommentService(ProductRepository productRepository, CommentRepository commentRepository) {
+    public DefaultCommentService(ProductRepository productRepository, CommentRepository commentRepository, ProductService productService) {
         this.productRepository = productRepository;
         this.commentRepository = commentRepository;
+        this.productService = productService;
     }
 
 
@@ -45,6 +49,7 @@ public class DefaultCommentService implements CommentService{
             return CreationResult.failure(OperationFailureReason.NOT_FOUND,"Product not found.");
         }
 
+        productService.updateProductRating(request.getProductId(), request.getRating());
         var createdComment = new Comment()
                 .setCommentId(UUID.randomUUID().toString())
                 .setCommentText(request.getCommentText())

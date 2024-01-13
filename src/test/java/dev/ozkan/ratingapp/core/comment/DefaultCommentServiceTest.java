@@ -4,6 +4,7 @@ import dev.ozkan.ratingapp.core.model.comment.Comment;
 import dev.ozkan.ratingapp.core.model.comment.Rating;
 import dev.ozkan.ratingapp.core.model.comment.UsageTime;
 import dev.ozkan.ratingapp.core.model.product.Product;
+import dev.ozkan.ratingapp.core.product.ProductService;
 import dev.ozkan.ratingapp.repository.CommentRepository;
 import dev.ozkan.ratingapp.repository.ProductRepository;
 import dev.ozkan.ratingapp.support.result.OperationFailureReason;
@@ -34,12 +35,15 @@ class DefaultCommentServiceTest {
     @Mock
     private ProductRepository productRepository;
 
+    @Mock
+    private ProductService productService;
+
     private DefaultCommentService service;
 
 
     @BeforeEach
     void setUp() {
-        service = new DefaultCommentService(productRepository, commentRepository);
+        service = new DefaultCommentService(productRepository, commentRepository, productService);
     }
 
 
