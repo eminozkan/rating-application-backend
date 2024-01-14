@@ -35,3 +35,4 @@ mvnw
 mvnw.cmd
 .mvn
 /src/main/resources/secret.properties
+/src/main/resources/application.properties
