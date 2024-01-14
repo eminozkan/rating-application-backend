@@ -28,25 +28,25 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addComment(UserSession session, @RequestBody @Valid AddCommentRequest request){
-        var result = commentService.addComment(request.toServiceRequest(),session.id());
-        if (!result.isSuccess()){
+    public ResponseEntity<?> addComment(UserSession session, @RequestBody @Valid AddCommentRequest request) {
+        var result = commentService.addComment(request.toServiceRequest(), session.id());
+        if (!result.isSuccess()) {
             return BusinessResultHandler.handleFailureReason(result.getReason(), result.getMessage());
         }
         return ResponseEntity.ok(new ResponseMessage().setMessage(result.getMessage()));
     }
 
-    @GetMapping()
-    public ResponseEntity<?> getCommentsByProductId(@RequestBody GetCommentsRequest request){
-        List<Comment> result = commentService.getCommentsByProductId(request.productId());
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getCommentsByProductId(@PathVariable String productId) {
+        List<Comment> result = commentService.getCommentsByProductId(productId);
         List<CommentResponse> commentResponseList = convertCommentsToCommentResponse(result);
         return ResponseEntity.ok(commentResponseList);
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteCommentById(UserSession session,@PathVariable String commentId){
-        var result = commentService.deleteComment(new DeleteCommentServiceRequest().setCommentId(commentId),session.id(),session.role());
-        if (!result.isSuccess()){
+    public ResponseEntity<?> deleteCommentById(UserSession session, @PathVariable String commentId) {
+        var result = commentService.deleteComment(new DeleteCommentServiceRequest().setCommentId(commentId), session.id(), session.role());
+        if (!result.isSuccess()) {
             return BusinessResultHandler.handleFailureReason(result.getReason(), result.getMessage());
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,13 +54,14 @@ public class CommentController {
 
     private List<CommentResponse> convertCommentsToCommentResponse(List<Comment> result) {
         List<CommentResponse> commentResponses = new ArrayList<>();
-        for (Comment c : result){
+        for (Comment c : result) {
             CommentResponse response = new CommentResponse()
                     .setCommentId(c.getCommentId())
                     .setCommentText(c.getCommentText())
                     .setUsageTime(c.getUsageTime())
                     .setRating(c.getRating())
-                    .setCreatedAt(c.getCreatedAt());
+                    .setCreatedAt(c.getCreatedAt())
+                    .setUserId(c.getUserId());
             commentResponses.add(response);
         }
         return commentResponses;
