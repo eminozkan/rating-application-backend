@@ -16,6 +16,8 @@ public class CommentResponse {
 
     private Instant createdAt;
 
+    private String userId;
+
 
     public String getCommentId() {
         return commentId;
@@ -59,6 +61,15 @@ public class CommentResponse {
 
     public CommentResponse setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+        return this;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public CommentResponse setUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 }
