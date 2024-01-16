@@ -9,5 +9,6 @@ public enum Category{
     MONITOR,
     HEADPHONES,
     TABLET,
-    MICROPHONE
+    MICROPHONE,
+    OTHER
 }
